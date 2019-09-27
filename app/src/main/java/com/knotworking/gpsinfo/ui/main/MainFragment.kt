@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.knotworking.gpsinfo.R
+import com.knotworking.gpsinfo.databinding.MainFragmentBinding
 import com.knotworking.gpsinfo.di.injectViewModel
 import javax.inject.Inject
 
@@ -25,20 +26,29 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
         viewModel = injectViewModel(viewModelFactory)
-        // TODO: Use the ViewModel
-        Log.i("TAG", viewModel.location)
+        val binding = MainFragmentBinding.inflate(inflater, container, false)
+        setupUi(binding)
 
-//        viewModel.lastKnownTime.observe(viewLifecycleOwner) {
-//            //update UI
-//        }
-
+        return binding.root
     }
 
+    private fun setupUi(binding: MainFragmentBinding) {
+        val longitudeObserver = Observer<Double> { newLongitude ->
+            Log.i("TAG", "newLongitude: $newLongitude")
+            binding.gpsCoordinates.text = newLongitude.toString()
+        }
+
+        viewModel.longitude.observe(this, longitudeObserver)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.onStop()
+    }
 }

@@ -38,8 +38,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     }
 
-
-
     private fun checkLocationPermission() {
         val isPermissionGranted = ContextCompat.checkSelfPermission(
             this,
@@ -48,7 +46,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         if (isPermissionGranted) {
             Log.i("TAG", "Permission Granted")
-//            Toast.makeText(context!!, "Permission Granted", Toast.LENGTH_SHORT).show()
         } else {
             Log.i("TAG", "Permission Denied")
             // Show rationale and request permission.
@@ -57,7 +54,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 100
             )
-//            Toast.makeText(context!!, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -73,7 +69,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
-//                mMap.setMyLocationEnabled(true);
+                //TODO broadcast to fragment to start tracking
             } else {
                 // Permission was denied. Display an error message.
             }

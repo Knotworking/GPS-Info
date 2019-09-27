@@ -64,7 +64,7 @@ object AppInjector {
                             f: Fragment,
                             savedInstanceState: Bundle?
                         ) {
-                            //TODO once I have non-injectable fragments
+                            //TODO once there are non-injectable fragments
 //                            if (f is Injectable) {
                             AndroidSupportInjection.inject(f)
 //                            }
