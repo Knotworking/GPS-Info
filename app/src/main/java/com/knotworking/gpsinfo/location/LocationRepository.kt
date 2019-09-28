@@ -1,6 +1,7 @@
 package com.knotworking.gpsinfo.location
 
 import android.content.Context
+import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,25 @@ import com.google.android.gms.tasks.Task
 import javax.inject.Inject
 
 class LocationRepository @Inject constructor(context: Context) {
+
+    val location = MutableLiveData<Location>()
+
+    //Gps Values
+//    val latitude = MutableLiveData<Double>() // Degrees
+//    val longitude = MutableLiveData<Double>()
+//    val altitude = MutableLiveData<Double>()
+//    val accuracy = MutableLiveData<Float>()
+//    val provider = MutableLiveData<String>()
+//    val speed = MutableLiveData<Float>()
+//    val elapsedRealtimeNanos = MutableLiveData<Long>()
+
+    //lat+long (double, degrees)
+    //accuracy (float, m)
+    //altitude (double, m)
+    //provider (string)
+    //speed (float, m/s)
+    //elapsedRealTimeNanos (long, can get time since)
+
 
     private var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -30,8 +50,6 @@ class LocationRepository @Inject constructor(context: Context) {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
-    val longitude = MutableLiveData<Double>()
-
     init {
         setupLocationSettingsCheck()
         setupLocationCallback()
@@ -43,7 +61,6 @@ class LocationRepository @Inject constructor(context: Context) {
             // All location settings are satisfied. The client can initialize location requests here.
 
             requestingLocationUpdates = true
-
             startTracking()
         }
 
@@ -54,6 +71,7 @@ class LocationRepository @Inject constructor(context: Context) {
 
             if (exception is ResolvableApiException) {
                 // Location settings are not satisfied, but this can be fixed by showing the user a dialog.
+                //TODO broadcast back to activity?
 
 //                try {
 //                    // Show the dialog by calling startResolutionForResult(),
@@ -71,10 +89,9 @@ class LocationRepository @Inject constructor(context: Context) {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                for (location in locationResult.locations) {
+                for (loc in locationResult.locations) {
                     // Update UI with location data
-
-                    longitude.value = location.longitude
+                    location.value = loc
                 }
             }
         }
