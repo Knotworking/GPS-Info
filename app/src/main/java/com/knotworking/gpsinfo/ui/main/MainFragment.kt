@@ -1,6 +1,7 @@
 package com.knotworking.gpsinfo.ui.main
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class MainFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.location = viewModel.location
+        binding.startTime = SystemClock.elapsedRealtimeNanos()
         return binding.root
     }
 

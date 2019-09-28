@@ -7,5 +7,6 @@
     <string name="accuracy_label">Accuracy +/- %sm</string>
     <string name="bearing_label">Bearing: %s&#xb0;</string>
     <string name="speed_label">Speed: %sm/s</string>
+    <string name="elapsed_time_label">Started tracking: %ss ago</string>
 
 </resources>

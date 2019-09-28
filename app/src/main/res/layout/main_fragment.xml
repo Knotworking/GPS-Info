@@ -11,6 +11,10 @@
             name="location"
             type="androidx.lifecycle.LiveData&lt;Location>" />
 
+        <variable
+            name="startTime"
+            type="Long" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,12 +96,26 @@
             android:layout_height="wrap_content"
             android:text="@{@string/speed_label(location.speed)}"
             android:textSize="16sp"
-            android:paddingBottom="@dimen/small_padding"
             style="@style/GpsText"
             app:layout_constraintEnd_toEndOf="@id/bearing"
             app:layout_constraintStart_toStartOf="@id/bearing"
             app:layout_constraintTop_toBottomOf="@id/bearing"
             tools:text="Speed: 0.75" />
+
+        <TextView
+            android:id="@+id/elapsedTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/speed_label(location.speed)}"
+            android:textSize="16sp"
+            android:paddingBottom="@dimen/small_padding"
+            style="@style/GpsText"
+            app:elapsedRealtime="@{location.elapsedRealtimeNanos}"
+            app:startTime="@{startTime}"
+            app:layout_constraintEnd_toEndOf="@id/speed"
+            app:layout_constraintStart_toStartOf="@id/speed"
+            app:layout_constraintTop_toBottomOf="@id/speed"
+            tools:text="Last update: 10s ago" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
