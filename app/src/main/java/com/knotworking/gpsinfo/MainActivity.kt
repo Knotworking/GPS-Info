@@ -1,4 +1,4 @@
-package com.knotworking.gpsinfo.ui.main
+package com.knotworking.gpsinfo
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,15 +8,15 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.knotworking.gpsinfo.R
-import dagger.android.AndroidInjection
+import com.knotworking.gpsinfo.location.ui.LocationFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
-    private val MAIN_FRAGMENT = "mainFragment"
+    private val LOCATION_FRAGMENT = "locationFragment"
+    private val PERMISSION_REQUEST_CODE = 100
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -28,14 +28,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         setContentView(R.layout.main_activity)
 
         if (savedInstanceState == null) {
-            //TODO how is it done in the sample app
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance(), MAIN_FRAGMENT)
+                .replace(R.id.container, LocationFragment.newInstance(), LOCATION_FRAGMENT)
                 .commitNow()
         }
 
         checkLocationPermission()
-
     }
 
     private fun checkLocationPermission() {
@@ -52,7 +50,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                100
+                PERMISSION_REQUEST_CODE
             )
         }
     }
@@ -62,9 +60,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         permissions: Array<out String>,
         grantResults: IntArray) {
 
-        Log.i("TAG", "onRequestPermissionsResult: " + requestCode + ", " + permissions[0] + ", " + grantResults[0])
+        Log.i("TAG",
+            "onRequestPermissionsResult: " + requestCode + ", " + permissions[0] + ", " + grantResults[0])
 
-        if (requestCode != 100) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions.size == 1 &&
                 permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED

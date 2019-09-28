@@ -1,6 +1,6 @@
 package com.knotworking.gpsinfo.di
 
-import com.knotworking.gpsinfo.ui.main.MainFragment
+import com.knotworking.gpsinfo.location.ui.LocationFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 abstract class BindFragmentsModule {
 
     @ContributesAndroidInjector
-    abstract fun contributeMainFragment(): MainFragment
+    abstract fun contributeMainFragment(): LocationFragment
 
 }

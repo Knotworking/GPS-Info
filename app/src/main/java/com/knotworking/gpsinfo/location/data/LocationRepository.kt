@@ -1,4 +1,4 @@
-package com.knotworking.gpsinfo.location
+package com.knotworking.gpsinfo.location.data
 
 import android.content.Context
 import android.location.Location

@@ -1,6 +1,6 @@
 package com.knotworking.gpsinfo.di
 
-import com.knotworking.gpsinfo.ui.main.MainActivity
+import com.knotworking.gpsinfo.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

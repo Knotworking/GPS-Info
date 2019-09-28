@@ -1,15 +1,15 @@
-package com.knotworking.gpsinfo.ui.main
+package com.knotworking.gpsinfo.location.ui
 
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.knotworking.gpsinfo.location.LocationRepository
+import com.knotworking.gpsinfo.location.data.LocationRepository
 import javax.inject.Inject
 
 /**
- * ViewModel for [MainFragment]
+ * ViewModel for [LocationFragment]
  */
-class MainViewModel @Inject constructor(private val repository: LocationRepository) : ViewModel() {
+class LocationViewModel @Inject constructor(private val repository: LocationRepository) : ViewModel() {
     val location: LiveData<Location> = repository.location
 
     fun onStart() {

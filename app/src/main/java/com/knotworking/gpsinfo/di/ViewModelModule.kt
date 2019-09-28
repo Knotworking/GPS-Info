@@ -2,7 +2,7 @@ package com.knotworking.gpsinfo.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.knotworking.gpsinfo.ui.main.MainViewModel
+import com.knotworking.gpsinfo.location.ui.LocationViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -12,8 +12,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+    @ViewModelKey(LocationViewModel::class)
+    abstract fun bindMainViewModel(viewModel: LocationViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
