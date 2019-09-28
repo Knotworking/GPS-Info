@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">GPS Info</string>
 
+    <string name="longitude_label">Longitude: %s</string>
     <string name="latitude_label">Latitude: %s</string>
+    <string name="altitude_label">Altitude: %s</string>
+    <string name="accuracy_label">Accuracy +/- %sm</string>
+    <string name="bearing_label">Bearing: %s&#xb0;</string>
+    <string name="speed_label">Speed: %sm/s</string>
+
 </resources>
