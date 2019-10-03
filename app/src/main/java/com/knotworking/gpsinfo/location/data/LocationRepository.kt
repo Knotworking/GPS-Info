@@ -1,7 +1,10 @@
 package com.knotworking.gpsinfo.location.data
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.location.GpsStatus
 import android.location.Location
+import android.location.LocationManager
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -10,26 +13,12 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import javax.inject.Inject
 
-class LocationRepository @Inject constructor(context: Context) {
 
+class LocationRepository @Inject constructor(context: Context): GpsStatus.Listener {
+
+    //TODO only expose LiveData (not mutable)
     val location = MutableLiveData<Location>()
-
-    //Gps Values
-//    val latitude = MutableLiveData<Double>() // Degrees
-//    val longitude = MutableLiveData<Double>()
-//    val altitude = MutableLiveData<Double>()
-//    val accuracy = MutableLiveData<Float>()
-//    val provider = MutableLiveData<String>()
-//    val speed = MutableLiveData<Float>()
-//    val elapsedRealtimeNanos = MutableLiveData<Long>()
-
-    //lat+long (double, degrees)
-    //accuracy (float, m)
-    //altitude (double, m)
-    //provider (string)
-    //speed (float, m/s)
-    //elapsedRealTimeNanos (long, can get time since)
-
+    val satellites = MutableLiveData<Int>()
 
     private var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -39,8 +28,11 @@ class LocationRepository @Inject constructor(context: Context) {
     private val client: SettingsClient = LocationServices.getSettingsClient(context)
     private val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
+    private val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
     private lateinit var locationCallback: LocationCallback
 
+    private var permissionGranted = false
     private var requestingLocationUpdates = false
     private var locationUpdatesStarted = false
 
@@ -53,6 +45,17 @@ class LocationRepository @Inject constructor(context: Context) {
     init {
         setupLocationSettingsCheck()
         setupLocationCallback()
+    }
+
+    fun onPermissionGranted() {
+        permissionGranted = true
+        setupLocationManager()
+        startTracking()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setupLocationManager() {
+        locationManager.addGpsStatusListener(this)
     }
 
     private fun setupLocationSettingsCheck() {
@@ -71,7 +74,6 @@ class LocationRepository @Inject constructor(context: Context) {
 
             if (exception is ResolvableApiException) {
                 // Location settings are not satisfied, but this can be fixed by showing the user a dialog.
-                //TODO broadcast back to activity?
 
 //                try {
 //                    // Show the dialog by calling startResolutionForResult(),
@@ -97,8 +99,28 @@ class LocationRepository @Inject constructor(context: Context) {
         }
     }
 
+    // From GpsStatus.Listener
+    override fun onGpsStatusChanged(event: Int) {
+        getSatellites()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getSatellites() {
+        var seenSatellites = 0
+        var satellitesInFix = 0
+
+        for (sat in locationManager.getGpsStatus(null).satellites) {
+            if (sat.usedInFix()) {
+                satellitesInFix++
+            }
+            seenSatellites++
+        }
+        Log.i("TAG", "$seenSatellites Used In Last Fix ($satellitesInFix)")
+        satellites.value = seenSatellites
+    }
+
     fun startTracking() {
-        if (requestingLocationUpdates && !locationUpdatesStarted) {
+        if (permissionGranted && requestingLocationUpdates && !locationUpdatesStarted) {
             Log.i("LocationRepository", "start tracking location")
             locationUpdatesStarted = true
             fusedLocationClient.requestLocationUpdates(
@@ -109,7 +131,10 @@ class LocationRepository @Inject constructor(context: Context) {
         } else {
             Log.i(
                 "LocationRepository",
-                "can't track location: requestingUpdates: $requestingLocationUpdates, started: $locationUpdatesStarted"
+                "can't track location:\n" +
+                        "permissionGranted: $permissionGranted\n" +
+                        "requestingUpdates: $requestingLocationUpdates\n" +
+                        "started: $locationUpdatesStarted"
             )
         }
     }

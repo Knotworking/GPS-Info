@@ -12,11 +12,21 @@ import javax.inject.Inject
 class LocationViewModel @Inject constructor(private val repository: LocationRepository) : ViewModel() {
     val location: LiveData<Location> = repository.location
 
+    val satellites: LiveData<Int> = repository.satellites
+
+    fun onPermissionGranted() {
+        repository.onPermissionGranted()
+    }
+
     fun onStart() {
         repository.startTracking()
     }
 
     fun onStop() {
         repository.stopTracking()
+    }
+
+    fun resetClick() {
+
     }
 }

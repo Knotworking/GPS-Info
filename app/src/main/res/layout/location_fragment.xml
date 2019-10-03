@@ -4,12 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.location.Location" />
-
         <variable
-            name="location"
-            type="androidx.lifecycle.LiveData&lt;Location>" />
+            name="viewModel"
+            type="com.knotworking.gpsinfo.location.ui.LocationViewModel" />
 
         <variable
             name="startTime"
@@ -29,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
-            android:text="@{@string/longitude_label(location.longitude)}"
+            android:text="@{@string/longitude_label(viewModel.location.longitude)}"
             android:textSize="25sp"
             android:textStyle="bold"
             android:paddingTop="@dimen/small_padding"
@@ -45,7 +42,7 @@
             android:id="@+id/latitude"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/latitude_label(location.latitude)}"
+            android:text="@{@string/latitude_label(viewModel.location.latitude)}"
             android:textSize="25sp"
             android:textStyle="bold"
             style="@style/GpsText"
@@ -58,7 +55,7 @@
             android:id="@+id/accuracy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/accuracy_label(location.accuracy)}"
+            android:text="@{@string/accuracy_label(viewModel.location.accuracy)}"
             android:textSize="16sp"
             style="@style/GpsText"
             app:layout_constraintEnd_toEndOf="@id/latitude"
@@ -70,7 +67,7 @@
             android:id="@+id/altitude"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/altitude_label(location.altitude)}"
+            android:text="@{@string/altitude_label(viewModel.location.altitude)}"
             android:textSize="16sp"
             style="@style/GpsText"
             app:layout_constraintEnd_toEndOf="@id/accuracy"
@@ -82,7 +79,7 @@
             android:id="@+id/bearing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/bearing_label(location.bearing)}"
+            android:text="@{@string/bearing_label(viewModel.location.bearing)}"
             android:textSize="16sp"
             style="@style/GpsText"
             app:layout_constraintEnd_toEndOf="@id/altitude"
@@ -94,7 +91,7 @@
             android:id="@+id/speed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/speed_label(location.speed)}"
+            android:text="@{@string/speed_label(viewModel.location.speed)}"
             android:textSize="16sp"
             style="@style/GpsText"
             app:layout_constraintEnd_toEndOf="@id/bearing"
@@ -106,16 +103,44 @@
             android:id="@+id/elapsedTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{@string/speed_label(location.speed)}"
+            android:text="@{@string/speed_label(viewModel.location.speed)}"
             android:textSize="16sp"
             android:paddingBottom="@dimen/small_padding"
             style="@style/GpsText"
-            app:elapsedRealtime="@{location.elapsedRealtimeNanos}"
+            app:elapsedRealtime="@{viewModel.location.elapsedRealtimeNanos}"
             app:startTime="@{startTime}"
             app:layout_constraintEnd_toEndOf="@id/speed"
             app:layout_constraintStart_toStartOf="@id/speed"
             app:layout_constraintTop_toBottomOf="@id/speed"
             tools:text="Last update: 10s ago" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:onClick="@{() -> viewModel.resetClick()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/elapsedTime"
+            app:layout_constraintBottom_toTopOf="@id/satellites"/>
+
+        <TextView
+            android:id="@+id/satellites"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="@{@string/satellites_label(viewModel.satellites)}"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:padding="@dimen/small_padding"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Satellites 5/20"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
