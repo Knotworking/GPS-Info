@@ -42,13 +42,9 @@ class LocationFragment : Fragment() {
         binding.viewModel = viewModel
         binding.startTime = SystemClock.elapsedRealtimeNanos()
 
+        checkLocationPermission(requireContext())
+
         return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        checkLocationPermission(context)
     }
 
     private fun checkLocationPermission(context: Context) {
