@@ -7,18 +7,19 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
+import com.knotworking.gpsinfo.utils.OpenForTesting
 import javax.inject.Inject
 
-
+@OpenForTesting
 class LocationRepository @Inject constructor(context: Context): GpsStatus.Listener {
 
-    //TODO only expose LiveData (not mutable)
-    val location = MutableLiveData<Location>()
-    val satellites = MutableLiveData<Int>()
+    private val _location = MutableLiveData<Location>()
+    private val _satellites = MutableLiveData<Int>()
 
     private var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -32,13 +33,14 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
 
     private lateinit var locationCallback: LocationCallback
 
+    private val locationUpdateInterval = 2000L // 2 seconds
     private var permissionGranted = false
     private var requestingLocationUpdates = false
     private var locationUpdatesStarted = false
 
     private val locationRequest = LocationRequest.create()?.apply {
-        interval = 2000
-        fastestInterval = 2000
+        interval = locationUpdateInterval
+        fastestInterval = locationUpdateInterval
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
@@ -93,7 +95,7 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
                 locationResult ?: return
                 for (loc in locationResult.locations) {
                     // Update UI with location data
-                    location.value = loc
+                    _location.value = loc
                 }
             }
         }
@@ -101,11 +103,11 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
 
     // From GpsStatus.Listener
     override fun onGpsStatusChanged(event: Int) {
-        getSatellites()
+        countSatellites()
     }
 
     @SuppressLint("MissingPermission")
-    private fun getSatellites() {
+    private fun countSatellites() {
         var seenSatellites = 0
         var satellitesInFix = 0
 
@@ -116,7 +118,7 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
             seenSatellites++
         }
         Log.i("TAG", "$seenSatellites Used In Last Fix ($satellitesInFix)")
-        satellites.value = seenSatellites
+        _satellites.value = seenSatellites
     }
 
     fun startTracking() {
@@ -145,4 +147,8 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
 
         Log.i("LocationRepository", "stop tracking location")
     }
+
+    fun getSatellites(): LiveData<Int> { return _satellites }
+
+    fun getLocation(): LiveData<Location> { return _location }
 }
