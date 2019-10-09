@@ -10,9 +10,9 @@ import javax.inject.Inject
  * ViewModel for [LocationFragment]
  */
 class LocationViewModel @Inject constructor(private val repository: LocationRepository) : ViewModel() {
-    val location: LiveData<Location> = repository.getLocation()
+    val location: LiveData<Location> = repository.location
 
-    val satellites: LiveData<Int> = repository.getSatellites()
+    val satellites: LiveData<Int> = repository.satellites
 
     fun onPermissionGranted() {
         repository.onPermissionGranted()

@@ -28,7 +28,7 @@ class LocationViewModelTest {
     @Before
     fun init() {
         satellites.value = NUMBER_OF_SATELLITES
-        `when`(repository.getSatellites()).thenReturn(satellites)
+        `when`(repository.satellites).thenReturn(satellites)
 
         viewModel = LocationViewModel(repository)
     }

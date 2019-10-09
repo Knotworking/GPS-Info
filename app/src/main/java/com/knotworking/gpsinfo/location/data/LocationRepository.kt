@@ -16,10 +16,16 @@ import com.knotworking.gpsinfo.utils.OpenForTesting
 import javax.inject.Inject
 
 @OpenForTesting
-class LocationRepository @Inject constructor(context: Context): GpsStatus.Listener {
+class LocationRepository @Inject constructor(context: Context) : GpsStatus.Listener {
 
     private val _location = MutableLiveData<Location>()
     private val _satellites = MutableLiveData<Int>()
+
+    val location: LiveData<Location>
+        get() = _location
+
+    val satellites: LiveData<Int>
+        get() = _satellites
 
     private var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -29,7 +35,8 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
     private val client: SettingsClient = LocationServices.getSettingsClient(context)
     private val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
-    private val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private val locationManager: LocationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     private lateinit var locationCallback: LocationCallback
 
@@ -148,7 +155,4 @@ class LocationRepository @Inject constructor(context: Context): GpsStatus.Listen
         Log.i("LocationRepository", "stop tracking location")
     }
 
-    fun getSatellites(): LiveData<Int> { return _satellites }
-
-    fun getLocation(): LiveData<Location> { return _location }
 }
