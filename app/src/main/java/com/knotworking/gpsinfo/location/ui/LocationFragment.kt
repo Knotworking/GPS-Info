@@ -40,7 +40,6 @@ class LocationFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.startTime = SystemClock.elapsedRealtimeNanos()
 
         checkLocationPermission(requireContext())
 

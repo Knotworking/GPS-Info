@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -18,9 +17,8 @@ class LocationConverterTest {
     //-122:23:27.6
     //Output: -122°23'27.6" W
 
-    //TODO Uses a static android method "Location.convert", so must be done in an integration test
     @Test
-    @Ignore
+    @Ignore("Uses a static android method \"Location.convert\", so must be done in an integration test")
     fun getDegreesAsDMS_normalInput_longitude() {
         // Given
         val degrees = 37.7783983

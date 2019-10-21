@@ -7,11 +7,6 @@
         <variable
             name="viewModel"
             type="com.knotworking.gpsinfo.location.ui.LocationViewModel" />
-
-        <variable
-            name="startTime"
-            type="Long" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,7 +105,7 @@
             android:paddingBottom="@dimen/small_padding"
             style="@style/GpsText"
             app:elapsedRealtime="@{viewModel.location.elapsedRealtimeNanos}"
-            app:startTime="@{startTime}"
+            app:currentTime="@{viewModel.currentTime}"
             app:layout_constraintEnd_toEndOf="@id/speed"
             app:layout_constraintStart_toStartOf="@id/speed"
             app:layout_constraintTop_toBottomOf="@id/speed"

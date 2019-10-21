@@ -7,7 +7,7 @@
     <string name="accuracy_label">Accuracy +/- %sm</string>
     <string name="bearing_label">Bearing: %s&#xb0;</string>
     <string name="speed_label">Speed: %sm/s</string>
-    <string name="elapsed_time_label">Started tracking: %ss ago</string>
+    <string name="elapsed_time_label">Last update %ss ago</string>
     <string name="satellites_label">Connected to %s satellites</string>
 
 </resources>
