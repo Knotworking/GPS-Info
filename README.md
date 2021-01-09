@@ -1,6 +1,6 @@
 # GPS-Info
-My latest project to try out current architecture and android components.
-I have only spent a few hours on it since getting back from Canada at the end of September, so is still an active project that I’m working on alongside the job search.
+My latest project to try out current architecture and android components (as of 2019).
+I have only spent a few hours on it since getting back from Canada at the end of September, so is still awork in progress.
 
 ### Use Case
 My phone sometimes does this weird thing where it stops receiving GPS updates and can't connect to any satelittes. I thought I'd create a project to help diagnose the problem and perhaps fix it by resetting... something? Up until now the only fix I have is turning my phone on/off, but maybe there's a way to solve this programatically.
