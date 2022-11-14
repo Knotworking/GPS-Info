@@ -1,5 +1,5 @@
 # GPS-Info
-My latest project to try out current architecture and android components (as of 2019).
+A to try out current architecture and android components (as of 2019).
 I have only spent a few hours on it since getting back from Canada at the end of September, so is still awork in progress.
 
 ### Use Case
